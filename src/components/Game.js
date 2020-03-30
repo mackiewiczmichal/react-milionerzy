@@ -15,7 +15,7 @@ export default class Game extends React.Component {
 
 
   gameStart = () => {
-    fetch("https://api.myjson.com/bins/1hblb8")
+    fetch("https://api.myjson.com/bins/1agxok")
     .then(res => res.json())
     .then(
       (result) => {
