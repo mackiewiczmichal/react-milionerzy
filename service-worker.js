@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-milionerzy/precache-manifest.95d4593d26e85551e4ee6d02d27bb71c.js"
+  "/react-milionerzy/precache-manifest.6bc2a36a9fe46217c0a89967ba822ff7.js"
 );
 
 self.addEventListener('message', (event) => {

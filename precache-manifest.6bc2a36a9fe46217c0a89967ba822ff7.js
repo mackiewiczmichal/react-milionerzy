@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1f69deba522b1fc5a09e17ff664b93dd",
+    "revision": "4d8ef7807b9b13b3686bcc28cf2f1d05",
     "url": "/react-milionerzy/index.html"
   },
   {
-    "revision": "0a95612bb6d8b6b5ec48",
-    "url": "/react-milionerzy/static/css/main.56889f46.chunk.css"
+    "revision": "9031d353c2466d653317",
+    "url": "/react-milionerzy/static/css/main.27a61c88.chunk.css"
   },
   {
-    "revision": "8d6dcb565a5142e3a9bf",
-    "url": "/react-milionerzy/static/js/2.8caedb70.chunk.js"
+    "revision": "936b9efaeccb711426be",
+    "url": "/react-milionerzy/static/js/2.1df84219.chunk.js"
   },
   {
     "revision": "e88a3e95b5364d46e95b35ae8c0dc27d",
-    "url": "/react-milionerzy/static/js/2.8caedb70.chunk.js.LICENSE.txt"
+    "url": "/react-milionerzy/static/js/2.1df84219.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "0a95612bb6d8b6b5ec48",
-    "url": "/react-milionerzy/static/js/main.b4d86c4d.chunk.js"
+    "revision": "9031d353c2466d653317",
+    "url": "/react-milionerzy/static/js/main.d43db9cc.chunk.js"
   },
   {
     "revision": "d65b48eecb42cdd08025",
