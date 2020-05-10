@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/react-milionerzy/static/css/main.27a61c88.chunk.css",
-    "main.js": "/react-milionerzy/static/js/main.d43db9cc.chunk.js",
-    "main.js.map": "/react-milionerzy/static/js/main.d43db9cc.chunk.js.map",
+    "main.css": "/react-milionerzy/static/css/main.e952462f.chunk.css",
+    "main.js": "/react-milionerzy/static/js/main.35745dd3.chunk.js",
+    "main.js.map": "/react-milionerzy/static/js/main.35745dd3.chunk.js.map",
     "runtime-main.js": "/react-milionerzy/static/js/runtime-main.e091b4f3.js",
     "runtime-main.js.map": "/react-milionerzy/static/js/runtime-main.e091b4f3.js.map",
     "static/js/2.1df84219.chunk.js": "/react-milionerzy/static/js/2.1df84219.chunk.js",
     "static/js/2.1df84219.chunk.js.map": "/react-milionerzy/static/js/2.1df84219.chunk.js.map",
     "index.html": "/react-milionerzy/index.html",
-    "precache-manifest.6bc2a36a9fe46217c0a89967ba822ff7.js": "/react-milionerzy/precache-manifest.6bc2a36a9fe46217c0a89967ba822ff7.js",
+    "precache-manifest.1000aa2f3e58913993c64be0b5a9afaa.js": "/react-milionerzy/precache-manifest.1000aa2f3e58913993c64be0b5a9afaa.js",
     "service-worker.js": "/react-milionerzy/service-worker.js",
-    "static/css/main.27a61c88.chunk.css.map": "/react-milionerzy/static/css/main.27a61c88.chunk.css.map",
+    "static/css/main.e952462f.chunk.css.map": "/react-milionerzy/static/css/main.e952462f.chunk.css.map",
     "static/js/2.1df84219.chunk.js.LICENSE.txt": "/react-milionerzy/static/js/2.1df84219.chunk.js.LICENSE.txt",
     "static/media/styles.scss": "/react-milionerzy/static/media/background.0dd5fc48.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.e091b4f3.js",
     "static/js/2.1df84219.chunk.js",
-    "static/css/main.27a61c88.chunk.css",
-    "static/js/main.d43db9cc.chunk.js"
+    "static/css/main.e952462f.chunk.css",
+    "static/js/main.35745dd3.chunk.js"
   ]
 }
