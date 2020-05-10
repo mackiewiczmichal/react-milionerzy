@@ -7,26 +7,37 @@ export default class GameContent extends React.Component {
         isAnswered:false,
         selectedAnswer:'',
         answers:['A','B','C','D'],
-        question:"Witaj rozpocznij grę by wylosować pytanie",
+        question:`Witaj ${this.props.player}rozpocznij grę by wylosować pytanie`,
         answerPrefix:['A','B','C','D'],
         buttonClass: "",
+        time:"30"
     }
   }
   componentDidUpdate(prevProps) {
     if (prevProps.answers !== this.props.answers) {
       this.setState({
           answers:this.props.answers,
-          question:this.props.question
+          question:this.props.question,
+          time:this.props.timer
       });
     }
+  }
+  componentWillReceiveProps(nextProps){
+      this.setState({
+          time:nextProps.timer
+      })
   }
   buttonSelected = selectedAnswer => ev => {
     this.setState({ 
         selectedAnswer:selectedAnswer,
         isAnswered:true
-    })
+    });
+    this.props.answerHandler(selectedAnswer);
+    this.props.selectedAnswer();
 }
-
+createMarkup = () => {
+    return {__html: this.state.question};
+    }
 
   render() {
       const answerAll = this.state.answers;
@@ -37,17 +48,18 @@ export default class GameContent extends React.Component {
                     <p className="question--header">
                         Pytanie
                     </p>
-                    <p className="question--content">
-                        {this.state.question}
-                    </p>
+                    <p dangerouslySetInnerHTML={this.createMarkup()} className="question--content"/>
+                </div>
+                <div className="timer--wrapper bg__dark p-05">
+                    <span>{this.state.time}</span>
                 </div>
                 <div className="answer--wrapper bg__dark p-05">
                 {answerAll.map((value, index) => {
                     return <button 
                     key={index} 
-                    onClick={this.buttonSelected(index)} 
+                    onClick={this.buttonSelected(index) } 
                     className={`answer--button ${this.state.isAnswered ? '' : 'answer--hover'} ${ index === this.state.selectedAnswer ? 'checked' : ''}`}
-                    disabled={this.state.isAnswered ? true : false}>
+                    >
                     <span className="answer__prefix">{answerPrefix[index]}</span>{value}</button>
                 })}
                 </div>

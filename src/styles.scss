@@ -4,6 +4,8 @@
     --darker-blue:#021031;
     --light-blue:#2285c9;
     --gold-yellow:#ffc222;
+    --green:#57fc57;
+    --red:#ff0000;
 
     --arrow-top:15px;
     --arrow-bottom:15px;
@@ -82,6 +84,10 @@ button{
         padding:1em;
         margin-top:1em;
     }
+    .nameTitle{
+        color:#fff;
+        font-weight: 600;
+    }
 }
 .game{
     display:grid;
@@ -93,6 +99,17 @@ button{
         grid-column-gap: 75px;
         grid-row-gap: 15px;
         padding:3em;
+    }
+    .timer--wrapper{
+        padding:2em 0;
+        span{
+            color:#fff;
+            font-weight: 500;
+            font-size: 20px;
+            border:2px solid #fff;
+            border-radius: 50%;
+            padding:1em;
+        }
     }
     @media (max-width:1200px){
         .answer--wrapper{
@@ -111,6 +128,32 @@ button{
         }
         & .answer__prefix{
             color:#000 !important;
+        }
+    }
+    .correct{
+        background: var(--green) !important;
+        color:#fff !important;
+        &.answer--button::before{
+            border-right: var(--arrow-right) solid var(--green);
+        }
+        &.answer--button::after{
+            border-left: var(--arrow-left) solid var(--green);
+        }
+        & .answer__prefix{
+            color:#fff !important;
+        }
+    }
+    .wrong{
+        background: var(--red) !important;
+        color:#fff !important;
+        &.answer--button::before{
+            border-right: var(--arrow-right) solid var(--red);
+        }
+        &.answer--button::after{
+            border-left: var(--arrow-left) solid var(--red);
+        }
+        & .answer__prefix{
+            color:#fff !important;
         }
     }
     .answer__prefix{
