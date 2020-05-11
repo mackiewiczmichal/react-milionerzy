@@ -65,9 +65,9 @@ createMarkup = () => {
                 </div>
                 
                 <div className="lifebuoy--wrapper bg__dark p-05">
-                    <button className="lifebuoy--item font__light-thick">Extra time</button>
-                    <button className="lifebuoy--item font__light-thick">50/50</button>
-                    <button className="lifebuoy--item font__light-thick">Audience chart</button>
+                    <button onClick ={this.props.ExtraTime} className="lifebuoy--item font__light-thick" disabled={this.props.propExtraTime === true ? true : false}>Extra time</button>
+                    <button onClick ={this.props.FiftyFifty} className="lifebuoy--item font__light-thick">50/50</button>
+                    <button onClick ={this.props.Audience} className="lifebuoy--item font__light-thick">Audience chart</button>
                 </div>
             </div>
             );

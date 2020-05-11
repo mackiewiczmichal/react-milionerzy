@@ -18,13 +18,18 @@ export default class Game extends React.Component {
       choosenAnswerIdx:'',
       score:11,
       currentWinnings:'0',
-      timeLeft:30
+      timeLeft:30,
+      usedExtraTime:false,
+      usedFiftyFifty:false,
+      usedAudience:false
     }
     this.handleChange = this.handleChange.bind(this);
   }
+  //Umożliwienie wpisywania nazwy gracza
   handleChange(event) {
     this.setState({playerName: event.target.value});
   }
+  //Akcja udzielania odpowiedzi
   answerHandler = index =>{
     this.setState({
       choosenAnswerIdx:index
@@ -37,7 +42,8 @@ export default class Game extends React.Component {
       setTimeout(() => {this.wrongAnswer(this.state.choosenAnswerIdx,this.state.corrAnswerIdx);}, 3000);
     }
   }
-selectedAnswer = index =>{
+//Reakcja wybranie odpowiedzi
+selectedAnswer = () =>{
   let allAnswers = document.querySelectorAll(".answer--button");
   for(let i = 0; i<allAnswers.length;i++){
     allAnswers[i].disabled = true;
@@ -48,6 +54,7 @@ selectedAnswer = index =>{
   }
 
 }
+//Rekcja na dobrą odpowiedź
 correctAnswer = index =>{
   let allAnswers = document.querySelectorAll(".answer--button");
   allAnswers[index].classList.add('correct');
@@ -57,6 +64,7 @@ correctAnswer = index =>{
   })
   
 }
+//Reakcja na zlą odpowiedź
 wrongAnswer = (choosen, correct) => {
   let allAnswers = document.querySelectorAll(".answer--button");
   allAnswers[choosen].classList.remove('checked');
@@ -68,6 +76,7 @@ wrongAnswer = (choosen, correct) => {
   });
   this.scoreboard();
 }
+//Reakcja na zmianę wyniku
 scoreboard = scoreIdx => {
   let scoreList = document.querySelectorAll("ol li");
   if(this.state.gameFinished === true){
@@ -84,8 +93,8 @@ scoreboard = scoreIdx => {
       });
     }
   }
-
 }
+//Przemieszanie pytań pobranych z API
 shuffle = arr => {
   for (let i = arr.length; i; i--) {
       let j = Math.floor(Math.random() * i);
@@ -93,6 +102,7 @@ shuffle = arr => {
   }
     return arr;
 }
+//Licznik pozostałego czasu na udzielenie odpowiedzi
 timer = () => {
   if(!this.state.gamePause) {
     this.setState({
@@ -109,6 +119,39 @@ timer = () => {
       clearInterval(this.intervalId);
   }
 }
+//Funkcja obsługiwania kół ratunkowych
+usedExtraTime = () =>{
+  if(this.state.usedExtraTime === false && this.state.gameStarted === true){
+    this.setState({
+      usedExtraTime:true,
+      timeLeft: this.state.timeLeft+=30
+    });
+  }
+}
+usedFiftyFifty = () =>{
+  if(this.state.usedFiftyFifty === false && this.state.gameStarted === true){
+    this.setState({
+      usedFiftyFifty:true
+    });
+    let answerArray = document.querySelectorAll(".answer--button");
+    var iterator = 0;
+    for(var i=0; i<answerArray.length; i++){
+      
+      if(i !== this.state.corrAnswerIdx && iterator<=1){
+        answerArray[i].classList.add('wrong');
+        iterator +=1;
+
+      }
+      console.log("adam");
+    };
+  }
+}
+usedAudience = () =>{
+  this.setState({
+    usedAudience:true
+  });
+}
+//Główna funkcja rozpoczynająca grę
   gameStart = () => {
     fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
     .then(res => res.json())
@@ -119,7 +162,7 @@ timer = () => {
         let incorrAnswer = result.results[0].incorrect_answers;
         let answersAll = this.shuffle([...corrAnswer, ...incorrAnswer]);
         const idxCorrAns = answersAll.indexOf(corrAnswer[0]);
-
+        //Czyszczenie dodanych styli do React DOMu
         for(let i = 0; i<allAnswers.length;i++){
           allAnswers[i].disabled = false;
           allAnswers[i].classList.add('answer--hover');
@@ -127,6 +170,7 @@ timer = () => {
           allAnswers[i].classList.remove('correct');
           allAnswers[i].classList.remove('checked');
         }
+        //Ustawienie własności początkowych
         this.setState({
           answers: answersAll,
           question:result.results[0].question,
@@ -134,7 +178,8 @@ timer = () => {
           corrAnswerIdx:idxCorrAns,
           gameFinished:false,
           gamePause:false,
-          timeLeft:'3'
+          timeLeft:'30',
+          currentWinnings:'0'
         });
       },
       (error) => {
@@ -146,9 +191,9 @@ timer = () => {
     this.setState({
       gameStarted:true
     });
+    //Wyczyszczenie i ustawienie timera
     clearInterval(this.intervalId);
     this.intervalId = setInterval(this.timer.bind(), 1000);
-
   }
 
   render() {
@@ -161,11 +206,22 @@ timer = () => {
                 <button onClick={this.gameStart} id="startGame" disabled={!this.state.playerName} className="panel--button button panel--item">Rozpocznij grę</button>
                 <button onClick={this.gameStart} className="panel--button button panel--item">Następne pytanie</button>
             </div>
-            <GameContent timer={this.state.timeLeft} answerHandler={this.answerHandler} selectedAnswer={this.selectedAnswer} answers={this.state.answers} question={this.state.question} player={this.state.playerName}/>
+            <GameContent 
+            timer={this.state.timeLeft}
+            answerHandler={this.answerHandler}
+            selectedAnswer={this.selectedAnswer}
+            ExtraTime={this.usedExtraTime}
+            FiftyFifty={this.usedFiftyFifty}
+            Audience={this.usedAudience}
+            propExtraValue={this.state.ExtraTime}
+            propFiftyFifty={this.state.FiftyFifty}
+            propAudience={this.state.Audience}
+            answers={this.state.answers} 
+            question={this.state.question}
+            player={this.state.playerName}/>
             <Score/>
         </div>
         <div>
-      <span>{this.state.timeLeft}</span>
     </div>
     </div>
 
