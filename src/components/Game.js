@@ -136,11 +136,9 @@ usedFiftyFifty = () =>{
     let answerArray = document.querySelectorAll(".answer--button");
     var iterator = 0;
     for(var i=0; i<answerArray.length; i++){
-      
       if(i !== this.state.corrAnswerIdx && iterator<=1){
         answerArray[i].classList.add('wrong');
         iterator +=1;
-
       }
       console.log("adam");
     };
@@ -152,7 +150,7 @@ usedAudience = () =>{
   });
 }
 //Główna funkcja rozpoczynająca grę
-  gameStart = () => {
+  gameStart = (round) => {
     fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
     .then(res => res.json())
     .then(
@@ -178,8 +176,7 @@ usedAudience = () =>{
           corrAnswerIdx:idxCorrAns,
           gameFinished:false,
           gamePause:false,
-          timeLeft:'30',
-          currentWinnings:'0'
+          timeLeft:'30'
         });
       },
       (error) => {
@@ -188,6 +185,14 @@ usedAudience = () =>{
         });
       }
     )
+    if(round !== 'next-round'){
+      this.setState({
+        currentWinnings:'0',
+        usedExtraTime:false,
+        usedFiftyFifty:false,
+        usedAudience:false
+      })
+    }
     this.setState({
       gameStarted:true
     });
@@ -204,7 +209,7 @@ usedAudience = () =>{
                 <p className="nameTitle">{this.state.playerName}</p>
                 <input className="panel--item" type="text" placeholder="Enter name..." value={this.state.playerName} onChange={this.handleChange}></input>
                 <button onClick={this.gameStart} id="startGame" disabled={!this.state.playerName} className="panel--button button panel--item">Rozpocznij grę</button>
-                <button onClick={this.gameStart} className="panel--button button panel--item">Następne pytanie</button>
+                <button onClick={() => this.gameStart('next-round')} className="panel--button button panel--item">Następne pytanie</button>
             </div>
             <GameContent 
             timer={this.state.timeLeft}
