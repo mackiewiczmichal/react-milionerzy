@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/react-milionerzy/static/css/main.e952462f.chunk.css",
-    "main.js": "/react-milionerzy/static/js/main.35745dd3.chunk.js",
-    "main.js.map": "/react-milionerzy/static/js/main.35745dd3.chunk.js.map",
+    "main.js": "/react-milionerzy/static/js/main.c5baa256.chunk.js",
+    "main.js.map": "/react-milionerzy/static/js/main.c5baa256.chunk.js.map",
     "runtime-main.js": "/react-milionerzy/static/js/runtime-main.e091b4f3.js",
     "runtime-main.js.map": "/react-milionerzy/static/js/runtime-main.e091b4f3.js.map",
     "static/js/2.1df84219.chunk.js": "/react-milionerzy/static/js/2.1df84219.chunk.js",
     "static/js/2.1df84219.chunk.js.map": "/react-milionerzy/static/js/2.1df84219.chunk.js.map",
     "index.html": "/react-milionerzy/index.html",
-    "precache-manifest.1000aa2f3e58913993c64be0b5a9afaa.js": "/react-milionerzy/precache-manifest.1000aa2f3e58913993c64be0b5a9afaa.js",
+    "precache-manifest.d73a2d2434c9f8cc6331c3ad9a6fdef7.js": "/react-milionerzy/precache-manifest.d73a2d2434c9f8cc6331c3ad9a6fdef7.js",
     "service-worker.js": "/react-milionerzy/service-worker.js",
     "static/css/main.e952462f.chunk.css.map": "/react-milionerzy/static/css/main.e952462f.chunk.css.map",
     "static/js/2.1df84219.chunk.js.LICENSE.txt": "/react-milionerzy/static/js/2.1df84219.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.e091b4f3.js",
     "static/js/2.1df84219.chunk.js",
     "static/css/main.e952462f.chunk.css",
-    "static/js/main.35745dd3.chunk.js"
+    "static/js/main.c5baa256.chunk.js"
   ]
 }
