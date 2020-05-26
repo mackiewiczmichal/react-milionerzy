@@ -13,6 +13,7 @@ export default class GameContent extends React.Component {
         time:"30"
     }
   }
+  //Sprawdzenie czy komponent po przeładowaniu się zmienił
   componentDidUpdate(prevProps) {
     if (prevProps.answers !== this.props.answers) {
       this.setState({
@@ -22,11 +23,13 @@ export default class GameContent extends React.Component {
       });
     }
   }
+  //Sprawdzenie czy komponent otrzymuje nowe propy od głównego komponentu
   componentWillReceiveProps(nextProps){
       this.setState({
           time:nextProps.timer
       })
   }
+  //Ustawia stan aplikacji kiedy odpowiedź została udzielona oraz wybrana odpowiedź
   buttonSelected = selectedAnswer => ev => {
     this.setState({ 
         selectedAnswer:selectedAnswer,
@@ -35,6 +38,7 @@ export default class GameContent extends React.Component {
     this.props.answerHandler(selectedAnswer);
     this.props.selectedAnswer();
 }
+// Wpisywanie treści pytania z uuwzględnieniem znaków specjalnych
 createMarkup = () => {
     return {__html: this.state.question};
     }

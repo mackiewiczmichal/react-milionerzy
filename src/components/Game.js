@@ -119,7 +119,7 @@ timer = () => {
       clearInterval(this.intervalId);
   }
 }
-//Funkcja obsługiwania kół ratunkowych
+//Funkcja obsługiwania koła ratunkowego extra 
 usedExtraTime = () =>{
   if(this.state.usedExtraTime === false && this.state.gameStarted === true){
     this.setState({
@@ -128,6 +128,7 @@ usedExtraTime = () =>{
     });
   }
 }
+//Funkcja obsługiwania koła ratunkowego extra 
 usedFiftyFifty = () =>{
   if(this.state.usedFiftyFifty === false && this.state.gameStarted === true){
     this.setState({
@@ -140,7 +141,6 @@ usedFiftyFifty = () =>{
         answerArray[i].classList.add('wrong');
         iterator +=1;
       }
-      console.log("adam");
     };
   }
 }
@@ -232,3 +232,5 @@ usedAudience = () =>{
 
         };
     }
+
+    

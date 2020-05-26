@@ -28,7 +28,13 @@ Wykorzystane technologie do stworzenia aplikacji Milionerzy react to:
 * API zbudowane Z wykorzystaniem PostgreSQL i Rust – Rust jako stosunkowa nowa technologia oprata na c++ jest wyjątkowo wydajna oraz prosta w użyciu jak również PostgreSQL ułatwia tworzenie bazy danych i umożliwia sprawniejsze konfiguracje do tworzenia API.
 
 # Interfejs graficzny
-![Image of Yaktocat](https://github.com/mackiewiczmichal/react-milionerzy/blob/master/images_repo/react-gui.png)
+![Image of gui](https://github.com/mackiewiczmichal/react-milionerzy/blob/master/images_repo/react-gui.png)
+### 1. Panel gry
+W tej seksji mamy 4 głównej elementy:
+* tekst z informacją o wpisanej nazwie użytkownika
+* pole do wprowadzania nazwy użytkownika
+* przycisk rozpoczynania gry
+* przycisk rozpoczęcia następnej rundy jeśli użytkownik odpowiedział poprawnie na pytanie
 # Struktura aplikacji
 
 1. [Plik zależności](#Plik-zależności)
@@ -89,12 +95,12 @@ Wykorzystane technologie do stworzenia aplikacji Milionerzy react to:
 # Struktura danych
 Struktura API z pytaniami została stworzona by móc manipulować ich trudnością oraz możliwością łatwego wyekstraktowania odpowiedzi prawidłowej.
 Konsumując nasze API mamy prosty schemat pobierania danych po ptrzymaniu tablicy z danymi `results` możemy odczytywac informacje iterując po jej indexach.
-`category` - informuje nas jakiej dziedziny będzie wykorzystane pytanie
-`type` - pytanie ma wiele 4 możliwe odpowiedzi
-`difficulty` - trudność pytania
-`question` - treść pytania
-`correct_answer` - poprawna odpowiedź
-`incorrect_answers` - tablica z niepoprawnymi odpowiedziami
+- `category` - informuje nas jakiej dziedziny będzie wykorzystane pytanie
+- `type` - pytanie ma wiele 4 możliwe odpowiedzi
+- `difficulty` - trudność pytania
+- `question` - treść pytania
+- `correct_answer` - poprawna odpowiedź
+- `incorrect_answers` - tablica z niepoprawnymi odpowiedziami
 
 ```javascript
 {"response_code":0,
@@ -171,8 +177,16 @@ W każdym komponencie mamy zadeklarowany jego stan, z którego pobieramy dane by
     );
   }
   ```
-  ## 2. Game.js
+  # 2. Game.js
   Nasz główny plik, w którym przechowujemy bieżący stan całej aplikacji oraz funkcje.
+
+  ### Nagłówek z elementami zaimportowanymi do pliku Game.js
+
+  ```javascript
+import React from 'react';
+import GameContent from './GameContent.js';
+import Score from './Score.js';
+  ```
 
   ### Stan pliku Game.js
   ```javascript
@@ -213,3 +227,419 @@ W każdym komponencie mamy zadeklarowany jego stan, z którego pobieramy dane by
   - usedExtraTime`[type:boolean]` - Informacja czy zostało użyte koło ratunkowe `Extra Time`
   - usedFiftyFifty`[type:boolean]` - Informacja czy zostało użyte koło ratunkowe `Fifty Fifty`
   - usedAudience`[type:boolean]` - Informacja czy zostało użyte koło ratunkowe `Audience Chart`
+
+### Funkcje wykorzystywane w aplikacji
+
+### `handleChange()`
+```javascript
+  //Umożliwienie wpisywania nazwy gracza
+  handleChange(event) {
+    this.setState({playerName: event.target.value});
+  }
+```
+Funkcja ta przypisuje wartość wprowadzoną do pola nazwa gracza do stanu aplikacji `playerName`
+
+### `answerHandler()`
+```javascript
+  //Akcja udzielania odpowiedzi
+  answerHandler = index =>{
+    this.setState({
+      choosenAnswerIdx:index
+    });
+    if(index === this.state.corrAnswerIdx){
+      setTimeout(() => {this.correctAnswer(this.state.corrAnswerIdx);}, 3000);
+      
+    }
+    else{
+      setTimeout(() => {this.wrongAnswer(this.state.choosenAnswerIdx,this.state.corrAnswerIdx);}, 3000);
+    }
+  }
+```
+Funkcja ta jest uchwytem do kontrolowania akcji udzielenia odpowiedzi
+### `selectedAnswer()`
+```javascript
+  //Reakcja wybranie odpowiedzi
+selectedAnswer = () =>{
+  let allAnswers = document.querySelectorAll(".answer--button");
+  for(let i = 0; i<allAnswers.length;i++){
+    allAnswers[i].disabled = true;
+    allAnswers[i].classList.remove('answer--hover');
+    this.setState({
+      gamePause:true
+    })
+  }
+
+}
+```
+Funkcja ta ustawia stan gry na `pause` wyłącza możliwość klikania w przyciski oraz usuwa odpowiednie style przycisków
+### `correctAnswer()`
+```javascript
+//Rekcja na dobrą odpowiedź
+correctAnswer = index =>{
+  let allAnswers = document.querySelectorAll(".answer--button");
+  allAnswers[index].classList.add('correct');
+  this.scoreboard(this.state.score);
+  this.setState({
+    score: this.state.score-1
+  })
+  
+}
+```
+Funkcja ta jest reakcją na poprawną odpowiedź wybraną przez użytkownika, aktualizuje wyświetlanie punktacji w tabeli
+### `wrongAnswer()`
+```javascript
+ //Reakcja na zlą odpowiedź
+wrongAnswer = (choosen, correct) => {
+  let allAnswers = document.querySelectorAll(".answer--button");
+  allAnswers[choosen].classList.remove('checked');
+  allAnswers[choosen].classList.add('wrong');
+  allAnswers[correct].classList.add('correct');
+  this.setState({
+    score: 11,
+    gameFinished:true
+  });
+  this.scoreboard();
+}
+
+```
+Funkcja ta jest reakcją na niepoprawną odpowiedź wybraną przez użytkownika zmienia stan gry na zakończony, ustawia stan podstawowego wyniku i czyści stylowanie tablicy
+
+### `scoreboard ()`
+```javascript
+//Reakcja na zmianę wyniku
+scoreboard = scoreIdx => {
+  let scoreList = document.querySelectorAll("ol li");
+  if(this.state.gameFinished === true){
+    for (let i = 11;i>=0; i--){
+      scoreList[i].style.background = "none";
+    }
+    alert(`Thanks for playing ${this.state.playerName}! You won ${this.state.currentWinnings}!`);
+  }
+  else{
+    for (let i = 11;i>=this.state.score; i--){
+      scoreList[i].style.background = "green";
+      this.setState({
+        currentWinnings: scoreList[i].innerText
+      });
+    }
+  }
+}
+```
+Funkcja ta aktualizuje tabelę z punktacją podświetlając obecną wielkość wygranej i umieszczanie jej w `currentWinnings` w zależności od stanu `score`
+### `shuffle()`
+```javascript
+//Przemieszanie pytań pobranych z API
+shuffle = arr => {
+  for (let i = arr.length; i; i--) {
+      let j = Math.floor(Math.random() * i);
+      [arr[i - 1], arr[j]] = [arr[j], arr[i - 1]];
+  }
+    return arr;
+}
+```
+Funkcja mająca na celu przetasowanie pytań pobranych z API
+### `timer()`
+```javascript
+//Licznik pozostałego czasu na udzielenie odpowiedzi
+timer = () => {
+  if(!this.state.gamePause) {
+    this.setState({
+        timeLeft: this.state.timeLeft - 1
+    });
+    console.log(this.state.timeLeft);
+  }
+  if (this.state.timeLeft === 0){
+      this.setState({
+        gameFinished:true,
+        gamePause:true
+      });
+      alert(`Thanks for playing ${this.state.playerName}! You won ${this.state.currentWinnings}!`);
+      clearInterval(this.intervalId);
+  }
+}
+```
+Jest to funkcja obliczająca ilość pozostałego czasu od nadanego stanu aplikacji, sprawdza czy czas się skończył, jeżeli tak to gra zostaje zakończona
+### `usedExtraTime()`
+```javascript
+//Funkcja obsługiwania koła ratunkowego Extra Time
+usedExtraTime = () =>{
+  if(this.state.usedExtraTime === false && this.state.gameStarted === true){
+    this.setState({
+      usedExtraTime:true,
+      timeLeft: this.state.timeLeft+=30
+    });
+  }
+}
+```
+Funkcja ta jest uchwytem koła ratunkowego Extra time, który dodaje 30 sekund do czasu pozostałego na oddanie pytania
+### `usedFiftyFifty()`
+```javascript
+//Funkcja obsługiwania koła ratunkowego extra 
+usedFiftyFifty = () =>{
+  if(this.state.usedFiftyFifty === false && this.state.gameStarted === true){
+    this.setState({
+      usedFiftyFifty:true
+    });
+    let answerArray = document.querySelectorAll(".answer--button");
+    var iterator = 0;
+    for(var i=0; i<answerArray.length; i++){
+      if(i !== this.state.corrAnswerIdx && iterator<=1){
+        answerArray[i].classList.add('wrong');
+        iterator +=1;
+      }
+    };
+  }
+}
+```
+Funkcja ta jest uchwytem koła ratunkowego Fifty Fifty podświetla dwie nieprawidłowe odpowiedzi
+### `gameStart()`
+```javascript
+//Główna funkcja rozpoczynająca grę
+  gameStart = (round) => {
+    fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
+    .then(res => res.json())
+    .then(
+      (result) => {
+        let allAnswers = document.querySelectorAll(".answer--button");
+        let corrAnswer = [result.results[0].correct_answer];
+        let incorrAnswer = result.results[0].incorrect_answers;
+        let answersAll = this.shuffle([...corrAnswer, ...incorrAnswer]);
+        const idxCorrAns = answersAll.indexOf(corrAnswer[0]);
+        //Czyszczenie dodanych styli do React DOMu
+        for(let i = 0; i<allAnswers.length;i++){
+          allAnswers[i].disabled = false;
+          allAnswers[i].classList.add('answer--hover');
+          allAnswers[i].classList.remove('wrong');
+          allAnswers[i].classList.remove('correct');
+          allAnswers[i].classList.remove('checked');
+        }
+        //Ustawienie własności początkowych
+        this.setState({
+          answers: answersAll,
+          question:result.results[0].question,
+          corrAnswer:corrAnswer,
+          corrAnswerIdx:idxCorrAns,
+          gameFinished:false,
+          gamePause:false,
+          timeLeft:'30'
+        });
+      },
+      (error) => {
+        this.setState({
+          error
+        });
+      }
+    )
+    if(round !== 'next-round'){
+      this.setState({
+        currentWinnings:'0',
+        usedExtraTime:false,
+        usedFiftyFifty:false,
+        usedAudience:false
+      })
+    }
+    this.setState({
+      gameStarted:true
+    });
+    //Wyczyszczenie i ustawienie timera
+    clearInterval(this.intervalId);
+    this.intervalId = setInterval(this.timer.bind(), 1000);
+  }
+```
+Jest to funkcja rozpoczynająca całą grę, pobiera ona pytanie z API, ustawia podstawowe stany głównego komponentu, uruchamia timer, resetuje możliwość 
+używania kół ratunkowych jeżeli argument przekazany funkcji `round` nie równia się `next-round`
+
+### `render() -- class Game w pliku Game.js`
+```javascript
+  render() {
+            return <div className="wrapper">
+        <div className="container">
+        <div className="panel bg__dark">
+                <p className="nameTitle">Twoja nazwa gracza</p>
+                <p className="nameTitle">{this.state.playerName}</p>
+                <input className="panel--item" type="text" placeholder="Enter name..." value={this.state.playerName} onChange={this.handleChange}></input>
+                <button onClick={this.gameStart} id="startGame" disabled={!this.state.playerName} className="panel--button button panel--item">Rozpocznij grę</button>
+                <button onClick={() => this.gameStart('next-round')} className="panel--button button panel--item">Następne pytanie</button>
+            </div>
+            <GameContent 
+            timer={this.state.timeLeft}
+            answerHandler={this.answerHandler}
+            selectedAnswer={this.selectedAnswer}
+            ExtraTime={this.usedExtraTime}
+            FiftyFifty={this.usedFiftyFifty}
+            Audience={this.usedAudience}
+            propExtraValue={this.state.ExtraTime}
+            propFiftyFifty={this.state.FiftyFifty}
+            propAudience={this.state.Audience}
+            answers={this.state.answers} 
+            question={this.state.question}
+            player={this.state.playerName}/>
+            <Score/>
+        </div>
+        <div>
+    </div>
+    </div>
+
+        };
+```
+W `render()` Zwracamy element JSX czyli HTML przeplatanego z javascriptem. To tutaj umieszczamy zaimportowane komponenty naszej aplikacji do których możemy przekazywać dane ze stanu głównej aplikacji
+Dane przekazywane do komponentów dzielą się na:
+* props - wartość read only tylko do odczytu i wyświetlenia w komponencie `timer={this.state.timeLeft}`
+* callbacks - funkcje przekazywane które wykorzystane w komonencie mogą zmieniać stan aplikacji `ExtraTime={this.usedExtraTime}`
+
+# 3. GameContent.js
+  Plik, w którym znajduje się kod odpowiedzialny za wyświetlanie pytań, przycisków odpowiedzi 
+
+  ### Nagłówek z elementami zaimportowanymi do pliku Game.js
+
+  ```javascript
+import React from 'react';
+  ```
+
+  ### Stan pliku GameContent.js
+
+    ```javascript
+  constructor(props) {
+    super(props);
+    this.state = {
+        isAnswered:false,
+        selectedAnswer:'',
+        answers:['A','B','C','D'],
+        question:`Witaj ${this.props.player}rozpocznij grę by wylosować pytanie`,
+        answerPrefix:['A','B','C','D'],
+        buttonClass: "",
+        time:"30"
+    }
+  }
+  ```
+
+  - isAnswered`[type:boolean]` - Przechowuje informacje o tym czy została udzielona odpowiedź
+  - selectedAnswer`[type:string]` - Index wybranej odpowiedzi
+  - answers`[type:array]` - Tablica z odpowiedziami(inicjują się z wartościami ['A','B','C','D'])
+  - question`[type:string]` - Przechowuje treść pytania
+  - answerPrefix`[type:array]` - Tablica ze znacznikami odpowiedzi 
+  - time`[type:int]` - Czas pozostały do końca rundy
+
+  ### Funkcje wykorzystywane w pliku GameContent.js
+
+### `componentDidUpdate()`
+```javascript
+  //Sprawdzenie czy komponent po przeładowaniu się zmienił
+  componentDidUpdate(prevProps) {
+    if (prevProps.answers !== this.props.answers) {
+      this.setState({
+          answers:this.props.answers,
+          question:this.props.question,
+          time:this.props.timer
+      });
+    }
+  }
+```
+Funkcja ta sprawdza czy stan komponentu się zmienił a jeżeli tak to ustawia nowe wartości stanu w miejsce starych.
+
+### `componentWillReceiveProps()`
+```javascript
+  //Sprawdzenie czy komponent otrzymuje nowe propy od głównego komponentu
+  componentWillReceiveProps(nextProps){
+      this.setState({
+          time:nextProps.timer
+      })
+  }
+```
+
+### `handleChange()`
+```javascript
+  //Ustawia stan aplikacji kiedy odpowiedź została udzielona oraz wybrana odpowiedź
+  buttonSelected = selectedAnswer => ev => {
+    this.setState({ 
+        selectedAnswer:selectedAnswer,
+        isAnswered:true
+    });
+    this.props.answerHandler(selectedAnswer);
+    this.props.selectedAnswer();
+}
+```
+Funkcja ta jest uchwytem mającym na celu sprawdzenie wybranej odpowiedzi i przekazanie jej wartości do callbacku do głównej aplikacji.
+
+### `render() -- class GameContent w pliku GameContent.js`
+```javascript
+  render() {
+      const answerAll = this.state.answers;
+      const answerPrefix = this.state.answerPrefix;
+            return(
+            <div className="game">
+                <div className="question--wrapper bg__dark p-05 font__light-thick">
+                    <p className="question--header">
+                        Pytanie
+                    </p>
+                    <p dangerouslySetInnerHTML={this.createMarkup()} className="question--content"/>
+                </div>
+                <div className="timer--wrapper bg__dark p-05">
+                    <span>{this.state.time}</span>
+                </div>
+                <div className="answer--wrapper bg__dark p-05">
+                {answerAll.map((value, index) => {
+                    return <button 
+                    key={index} 
+                    onClick={this.buttonSelected(index) } 
+                    className={`answer--button ${this.state.isAnswered ? '' : 'answer--hover'} ${ index === this.state.selectedAnswer ? 'checked' : ''}`}
+                    >
+                    <span className="answer__prefix">{answerPrefix[index]}</span>{value}</button>
+                })}
+                </div>
+                
+                <div className="lifebuoy--wrapper bg__dark p-05">
+                    <button onClick ={this.props.ExtraTime} className="lifebuoy--item font__light-thick" disabled={this.props.propExtraTime === true ? true : false}>Extra time</button>
+                    <button onClick ={this.props.FiftyFifty} className="lifebuoy--item font__light-thick">50/50</button>
+                    <button onClick ={this.props.Audience} className="lifebuoy--item font__light-thick">Audience chart</button>
+                </div>
+            </div>
+            );
+        };
+```
+
+W tej funkcji wykorzystujemy otrzymane propy i callbacki z głównego komponentu
+* `onClick ={this.props.FiftyFifty}` - po kliknięciu wywołujemy funkcję zadeklarowaną w głównym komponencie zmieniając jego stan
+
+  # 2. Score.js
+  Plik w którym znajduje się kod odpowiedzialny za zmianę wyświetlania antualnego wyniku gracza
+
+  ### Nagłówek z elementami zaimportowanymi do pliku Game.js
+
+  ```javascript
+
+import React from 'react';
+
+export default class Score extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      answers: ['A', 'B', 'C', 'D']
+    }
+  }
+
+  render() {
+            return(
+            <div className="score bg__dark p-1 font__light-thick" >
+                <h1>Postępy w grze</h1>
+                <ol reversed>
+                    <li className="milestone">1000000</li>
+                    <li>500000</li>
+                    <li>250000</li>
+                    <li>125000</li>
+                    <li>75000</li>
+                    <li className="milestone">40000</li>
+                    <li>20000</li>
+                    <li>10000</li>
+                    <li>5000</li>
+                    <li>2000</li>
+                    <li className="milestone">1000</li>
+                    <li>500</li>
+                </ol>
+            </div>
+            );
+        };
+    }
+  ```
+
+  Ten komponent został utworzony tylko ze względu na oddzielenie części jego kodu by łatwiej zarządzać kodem głównej aplikacji
