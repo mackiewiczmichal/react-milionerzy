@@ -1,5 +1,17 @@
 Aplikacja jest dostępna pod adresem  [Milionerzy React](https://mackiewiczmichal.github.io/react-milionerzy/).
 
+Autorzy aplikacji:
+Michał Mackiewicz(prowadzący),
+Krzysztof Kania,
+Maciej Broczek
+
+# O aplikacji
+
+Aplikacja "Milionerzy" została stworzona by uhonorować  pamiętną  jej wersję znaną z telewizji. Celem jej jest odtworzenie akcji i działań w owym teleturnieju do czego została wykorzystana nowa technologia, której dopiero się uczyliśmy po to, by szybciej ją przystwoić w praktyczny sposób.
+
+Prosty interfejs graficzny pozwala na wpisanie swojej nazwy, rozpoczęcie gry, wykorzystanie koła ratunkowego oraz rozpoczęcie nowej rundy. Rozpoczynając
+nową rundę gracz ma 30 sekund na odpowiedź jeżeli nie zostaje udzielona to gra się kończy i gracz zostaje z ostatnią najwyższą wygraną.
+
 # Założenia alikacji
 
 - [x] Gracz po wpisaniu swojego nicku może rozpocząć grę, następnie ładowane są pytania i uruchamiany jest timer 30-sekundowy. 
@@ -11,20 +23,19 @@ próg wygranej i gracz może rozpocząć kolejną rundę.
 
 # Stack technologiczny
 Wykorzystane technologie do stworzenia aplikacji Milionerzy react to: 
-* React DOM
-* React Scripts
-* Node-sass
-* API zbudowane Z wykorzystaniem PostgreSQL i Rust
+* Framework JavaScript – React. Głównym argumentem za wykorzystaniem go jest niski próg trudności co do przetwarzania zapytań z API oraz intuicyjny sposób wstrzykiwania przetwarzanych danych do drzewa DOM.
+* Node-sass – Pozwala on na wykorzystywanie mixin, zmiennych oraz zagnieżdżania styli w arkuszach co ułatwia modyfikacje graficzne na stronie.
+* API zbudowane Z wykorzystaniem PostgreSQL i Rust – Rust jako stosunkowa nowa technologia oprata na c++ jest wyjątkowo wydajna oraz prosta w użyciu jak również PostgreSQL ułatwia tworzenie bazy danych i umożliwia sprawniejsze konfiguracje do tworzenia API.
 
 # Struktura aplikacji
 
 1. [Plik zależności](#Plik-zależności)
 2. [Struktura danych](#Struktura-danych)
 3. [Komponenty aplikacji](#Komponenty-aplikacji)
-    1. [App.js](#App.js)
-    2. [Game.js](#Game.js)
-    3. [GameContent.js](#GameContent.js)
-    4. [Score.js](#Score.js)
+    1. [App.js](#app.js)
+    2. [Game.js](##Game.js)
+    3. [GameContent.js](##GameContent.js)
+    4. [Score.js](##Score.js)
 
 # Plik zależności
 
@@ -75,6 +86,13 @@ Wykorzystane technologie do stworzenia aplikacji Milionerzy react to:
 ```
 # Struktura danych
 Struktura API z pytaniami została stworzona by móc manipulować ich trudnością oraz możliwością łatwego wyekstraktowania odpowiedzi prawidłowej.
+Konsumując nasze API mamy prosty schemat pobierania danych po ptrzymaniu tablicy z danymi `results` możemy odczytywac informacje iterując po jej indexach.
+`category` - informuje nas jakiej dziedziny będzie wykorzystane pytanie
+`type` - pytanie ma wiele 4 możliwe odpowiedzi
+`difficulty` - trudność pytania
+`question` - treść pytania
+`correct_answer` - poprawna odpowiedź
+`incorrect_answers` - tablica z niepoprawnymi odpowiedziami
 
 ```javascript
 {"response_code":0,
@@ -91,8 +109,56 @@ Struktura API z pytaniami została stworzona by móc manipulować ich trudności
 
 ```
 # Komponenty aplikacji
-Aplikacja została podzielona na komponenty w celu łatwiejszego jej zarządzania. W każdym komponencie mamy zadeklarowany stan komponentu, z którego pobieramy dane by móc renderować je w funkcji generującej DOM.
-  ## 1.  App.js
+Aplikacja została podzielona na komponenty w celu łatwiejszego jej zarządzania. Komponene sklada się z trzech głównych elementów: 
+Nagłówka z dołączeniami, które chcemy zawrzeć w naszej aplikacji:
+```javascript
+import React from 'react';
+import GameContent from './GameContent.js';
+import Score from './Score.js';
+```
+Inicjacji klasy wraz ze stanem oraz funkcjami:
+```javascript
+export default class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }}
+```
+Funkcji render w której zwracamy nasze stany, funkcje, elementy HTML  oraz zagnieżdżamy zaimportowane elementy z nagłówka:
+```javascript
+render() {
+            return <div className="wrapper">
+        <div className="container">
+        <div className="panel bg__dark">
+                <p className="nameTitle">Twoja nazwa gracza</p>
+                <p className="nameTitle">{this.state.playerName}</p>
+                <input className="panel--item" type="text" placeholder="Enter name..." value={this.state.playerName} onChange={this.handleChange}></input>
+                <button onClick={this.gameStart} id="startGame" disabled={!this.state.playerName} className="panel--button button panel--item">Rozpocznij grę</button>
+                <button onClick={() => this.gameStart('next-round')} className="panel--button button panel--item">Następne pytanie</button>
+            </div>
+            <GameContent 
+            timer={this.state.timeLeft}
+            answerHandler={this.answerHandler}
+            selectedAnswer={this.selectedAnswer}
+            ExtraTime={this.usedExtraTime}
+            FiftyFifty={this.usedFiftyFifty}
+            Audience={this.usedAudience}
+            propExtraValue={this.state.ExtraTime}
+            propFiftyFifty={this.state.FiftyFifty}
+            propAudience={this.state.Audience}
+            answers={this.state.answers} 
+            question={this.state.question}
+            player={this.state.playerName}/>
+            <Score/>
+        </div>
+        <div>
+    </div>
+    </div>
+
+        };
+```
+W każdym komponencie mamy zadeklarowany jego stan, z którego pobieramy dane by móc renderować je w funkcji generującej DOM.
+  # 1.  # App.js
   Jest to plik, w którym znajduje się wyłącznie zestawienie naszego drzewa komponentów. W naszym przypadku jest to wyłącznie komponent `<Game/>`.
 
   Z tego pliku React renderuje wszystko to co zostanie umieszczone w `App.js`.
