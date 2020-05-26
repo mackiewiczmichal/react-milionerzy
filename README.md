@@ -601,13 +601,10 @@ Funkcja ta jest uchwytem mającym na celu sprawdzenie wybranej odpowiedzi i prze
 W tej funkcji wykorzystujemy otrzymane propy i callbacki z głównego komponentu
 * `onClick ={this.props.FiftyFifty}` - po kliknięciu wywołujemy funkcję zadeklarowaną w głównym komponencie zmieniając jego stan
 
-  # 2. Score.js
+# 4. Score.js
   Plik w którym znajduje się kod odpowiedzialny za zmianę wyświetlania antualnego wyniku gracza
 
-  ### Nagłówek z elementami zaimportowanymi do pliku Game.js
-
-  ```javascript
-
+```javascript
 import React from 'react';
 
 export default class Score extends React.Component {
@@ -640,6 +637,8 @@ export default class Score extends React.Component {
             );
         };
     }
-  ```
+```
+
+
 
   Ten komponent został utworzony tylko ze względu na oddzielenie części jego kodu by łatwiej zarządzać kodem głównej aplikacji
