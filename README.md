@@ -27,6 +27,8 @@ Wykorzystane technologie do stworzenia aplikacji Milionerzy react to:
 * Node-sass – Pozwala on na wykorzystywanie mixin, zmiennych oraz zagnieżdżania styli w arkuszach co ułatwia modyfikacje graficzne na stronie.
 * API zbudowane Z wykorzystaniem PostgreSQL i Rust – Rust jako stosunkowa nowa technologia oprata na c++ jest wyjątkowo wydajna oraz prosta w użyciu jak również PostgreSQL ułatwia tworzenie bazy danych i umożliwia sprawniejsze konfiguracje do tworzenia API.
 
+# Interfejs graficzny
+![Image of Yaktocat](https://github.com/mackiewiczmichal/react-milionerzy/blob/master/images_repo/react-gui.png)
 # Struktura aplikacji
 
 1. [Plik zależności](#Plik-zależności)
