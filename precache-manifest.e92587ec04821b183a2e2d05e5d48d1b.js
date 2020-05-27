@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "88b89c62f6673723fed2bfaa808cc29f",
+    "revision": "8261c0d32e5431bc3bc02e4595c61522",
     "url": "/react-milionerzy/index.html"
   },
   {
-    "revision": "090a1441cdf6f98fc5ea",
+    "revision": "29ee65db6145873089ce",
     "url": "/react-milionerzy/static/css/main.e952462f.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-milionerzy/static/js/2.1df84219.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "090a1441cdf6f98fc5ea",
-    "url": "/react-milionerzy/static/js/main.5b0ead42.chunk.js"
+    "revision": "29ee65db6145873089ce",
+    "url": "/react-milionerzy/static/js/main.04ce1d38.chunk.js"
   },
   {
     "revision": "d65b48eecb42cdd08025",
