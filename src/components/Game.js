@@ -156,7 +156,8 @@ usedAudience = () =>{
 //Główna funkcja rozpoczynająca grę
   gameStart = (round) => {
     //fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
-    fetch("https://whispering-dusk-90520.herokuapp.com/api")
+    fetch("/api")
+    .then(console.log("acces granted"))
     .then(res => res.json())
     .then(
       (result) => {
@@ -178,7 +179,7 @@ usedAudience = () =>{
         //Ustawienie własności początkowych
         this.setState({
           answers: answersAll,
-          question:result.results[0].question,
+          question:result[0].question,
           corrAnswer:corrAnswer,
           corrAnswerIdx:idxCorrAns,
           gameFinished:false,
