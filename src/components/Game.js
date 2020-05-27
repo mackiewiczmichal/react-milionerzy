@@ -13,6 +13,7 @@ export default class Game extends React.Component {
       gameStarted:false,
       gameFinished:false,
       gamePause:true,
+      nextRound:false,
       corrAnswer:[],
       corrAnswerIdx:'',
       choosenAnswerIdx:'',
@@ -60,7 +61,8 @@ correctAnswer = index =>{
   allAnswers[index].classList.add('correct');
   this.scoreboard(this.state.score);
   this.setState({
-    score: this.state.score-1
+    score: this.state.score-1,
+    nextRound:true
   })
   
 }
@@ -72,7 +74,9 @@ wrongAnswer = (choosen, correct) => {
   allAnswers[correct].classList.add('correct');
   this.setState({
     score: 11,
-    gameFinished:true
+    gameFinished:true,
+    nextRound:false,
+    gameStarted:false
   });
   this.scoreboard();
 }
@@ -151,13 +155,16 @@ usedAudience = () =>{
 }
 //Główna funkcja rozpoczynająca grę
   gameStart = (round) => {
-    fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
+    //fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
+    fetch("https://whispering-dusk-90520.herokuapp.com/api")
     .then(res => res.json())
     .then(
       (result) => {
         let allAnswers = document.querySelectorAll(".answer--button");
-        let corrAnswer = [result.results[0].correct_answer];
-        let incorrAnswer = result.results[0].incorrect_answers;
+        //let corrAnswer = [result.results[0].correct_answer];
+        //let incorrAnswer = result.results[0].incorrect_answers;
+        let corrAnswer = [result[0].correct_answer];
+        let incorrAnswer = result[0].incorrect_answers;
         let answersAll = this.shuffle([...corrAnswer, ...incorrAnswer]);
         const idxCorrAns = answersAll.indexOf(corrAnswer[0]);
         //Czyszczenie dodanych styli do React DOMu
@@ -176,6 +183,7 @@ usedAudience = () =>{
           corrAnswerIdx:idxCorrAns,
           gameFinished:false,
           gamePause:false,
+          nextRound:false,
           timeLeft:'30'
         });
       },
@@ -202,14 +210,16 @@ usedAudience = () =>{
   }
 
   render() {
+    let visibilityState = this.state.nextRound === true ? "visible" : "hidden";
+    let startVisibility = this.state.gameStarted === false ? "visible" : "hidden";
             return <div className="wrapper">
         <div className="container">
         <div className="panel bg__dark">
                 <p className="nameTitle">Twoja nazwa gracza</p>
                 <p className="nameTitle">{this.state.playerName}</p>
                 <input className="panel--item" type="text" placeholder="Enter name..." value={this.state.playerName} onChange={this.handleChange}></input>
-                <button onClick={this.gameStart} id="startGame" disabled={!this.state.playerName} className="panel--button button panel--item">Rozpocznij grę</button>
-                <button onClick={() => this.gameStart('next-round')} className="panel--button button panel--item">Następne pytanie</button>
+                <button onClick={this.gameStart} id="startGame" style={{ visibility:startVisibility}} disabled={!this.state.playerName} className="panel--button button panel--item">Rozpocznij grę</button>
+                <button onClick={() => this.gameStart('next-round')} style={{ visibility:visibilityState}} disabled={!this.state.playerName} className="panel--button button panel--item">Następne pytanie</button>
             </div>
             <GameContent 
             timer={this.state.timeLeft}

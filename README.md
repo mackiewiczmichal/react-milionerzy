@@ -19,13 +19,12 @@ nową rundę gracz ma 30 sekund na odpowiedź jeżeli nie zostaje udzielona to g
 - [x] Po wybraniu odpowiedzi timer zostaje zatrzymany, pytanie jest sprawdzane. Jeżli odpowiedź jest poprawna zostaje podświetlony zaliczony
 próg wygranej i gracz może rozpocząć kolejną rundę.
 - [x] Nie zaznaczenie żadnej odpowiedzi i wyczerpanie czasu timera skutkuje przegraną.
-- [ ] Wynik zostaje zapisany w zewnętrznej bazie danych
 
 # Stack technologiczny
 Wykorzystane technologie do stworzenia aplikacji Milionerzy react to: 
 * Framework JavaScript – React. Głównym argumentem za wykorzystaniem go jest niski próg trudności co do przetwarzania zapytań z API oraz intuicyjny sposób wstrzykiwania przetwarzanych danych do drzewa DOM.
 * Node-sass – Pozwala on na wykorzystywanie mixin, zmiennych oraz zagnieżdżania styli w arkuszach co ułatwia modyfikacje graficzne na stronie.
-* API zbudowane Z wykorzystaniem PostgreSQL i Rust – Rust jako stosunkowa nowa technologia oprata na c++ jest wyjątkowo wydajna oraz prosta w użyciu jak również PostgreSQL ułatwia tworzenie bazy danych i umożliwia sprawniejsze konfiguracje do tworzenia API.
+* API zbudowane Z wykorzystaniem PostgreSQL i Rust – więcej informacji o użytych technologiach można przeczytać tutaj: [Dukumentacja bazy oraz API](https://github.com/KaniaKrzysztof/milionare_api)
 
 # Interfejs graficzny
 ![Image of gui](https://github.com/mackiewiczmichal/react-milionerzy/blob/master/images_repo/react-gui.png)
@@ -35,6 +34,12 @@ W tej seksji mamy 4 głównej elementy:
 * pole do wprowadzania nazwy użytkownika
 * przycisk rozpoczynania gry
 * przycisk rozpoczęcia następnej rundy jeśli użytkownik odpowiedział poprawnie na pytanie
+### 2. Interfejs rozgrywki
+Składa się z trzech głównych elementów:
+* Pole pyświetlania pytania - pojawia się treść wylosowanego pytania
+* Timer - wyświetla czas pozostały do końca tury
+* Tabela z 4 możliwymi odpowiedziami - po kliknięciu przycisk się podświetla a następnie system waliduje czy odpowiedź jest prawidłowa.
+* Sekcja z kołami ratunkowymi - Dodatkoway czas (+30 sekund), 50/50(podświetla dwie niepawidłowe odpowiedzi), pytanie do publiczności(wyświetla najbardziej prawdopodobną odpowiedź)
 # Struktura aplikacji
 
 1. [Plik zależności](#Plik-zależności)

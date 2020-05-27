@@ -4,7 +4,6 @@ export default class GameContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        isAnswered:false,
         selectedAnswer:'',
         answers:['A','B','C','D'],
         question:`Witaj ${this.props.player}rozpocznij grę by wylosować pytanie`,
@@ -19,7 +18,8 @@ export default class GameContent extends React.Component {
       this.setState({
           answers:this.props.answers,
           question:this.props.question,
-          time:this.props.timer
+          time:this.props.timer,
+          selectedAnswer:''
       });
     }
   }
@@ -32,8 +32,7 @@ export default class GameContent extends React.Component {
   //Ustawia stan aplikacji kiedy odpowiedź została udzielona oraz wybrana odpowiedź
   buttonSelected = selectedAnswer => ev => {
     this.setState({ 
-        selectedAnswer:selectedAnswer,
-        isAnswered:true
+        selectedAnswer:selectedAnswer
     });
     this.props.answerHandler(selectedAnswer);
     this.props.selectedAnswer();
@@ -62,7 +61,7 @@ createMarkup = () => {
                     return <button 
                     key={index} 
                     onClick={this.buttonSelected(index) } 
-                    className={`answer--button ${this.state.isAnswered ? '' : 'answer--hover'} ${ index === this.state.selectedAnswer ? 'checked' : ''}`}
+                    className={`answer--button  answer--hover ${ index === this.state.selectedAnswer ? 'checked' : ''}`}
                     >
                     <span className="answer__prefix">{answerPrefix[index]}</span>{value}</button>
                 })}
