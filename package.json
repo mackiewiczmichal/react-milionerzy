@@ -3,7 +3,6 @@
   "name": "milionerzy-react",
   "version": "0.1.0",
   "private": true,
-  "proxy":"https://whispering-dusk-90520.herokuapp.com",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -11,7 +10,8 @@
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-sound": "^1.2.0"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -39,5 +39,4 @@
   "devDependencies": {
     "gh-pages": "^2.2.0"
   }
-  
 }

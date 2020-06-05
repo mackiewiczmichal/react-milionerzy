@@ -2,6 +2,7 @@
 import React from 'react';
 import GameContent from './GameContent.js';
 import Score from './Score.js';
+import Main from './Main.js';
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -9,12 +10,12 @@ export default class Game extends React.Component {
     this.state = {
       playerName:'',
       question:'',
-      answers:[],
+      answers:[''],
       gameStarted:false,
       gameFinished:false,
       gamePause:true,
       nextRound:false,
-      corrAnswer:[],
+      corrAnswer:[''],
       corrAnswerIdx:'',
       choosenAnswerIdx:'',
       score:11,
@@ -153,19 +154,22 @@ usedAudience = () =>{
     usedAudience:true
   });
 }
+changeAudio = (id, src) => {
+  const audio = document.querySelector(`#${id}`);
+  audio.currentTime=0;
+  audio.src=`./sounds/${src}.mp3`;
+  audio.play();
+}
 //Główna funkcja rozpoczynająca grę
   gameStart = (round) => {
-    //fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
-    fetch("/api")
-    .then(console.log("acces granted"))
-    .then(res => res.json())
+    this.changeAudio('mainTheme', 'lets_play');
+    fetch("https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple")
+    .then(data => data.json())
     .then(
       (result) => {
         let allAnswers = document.querySelectorAll(".answer--button");
-        //let corrAnswer = [result.results[0].correct_answer];
-        //let incorrAnswer = result.results[0].incorrect_answers;
-        let corrAnswer = [result[0].correct_answer];
-        let incorrAnswer = result[0].incorrect_answers;
+        let corrAnswer = [result.results[0].correct_answer];
+        let incorrAnswer = result.results[0].incorrect_answers;
         let answersAll = this.shuffle([...corrAnswer, ...incorrAnswer]);
         const idxCorrAns = answersAll.indexOf(corrAnswer[0]);
         //Czyszczenie dodanych styli do React DOMu
@@ -179,7 +183,7 @@ usedAudience = () =>{
         //Ustawienie własności początkowych
         this.setState({
           answers: answersAll,
-          question:result[0].question,
+          question:result.results[0].question,
           corrAnswer:corrAnswer,
           corrAnswerIdx:idxCorrAns,
           gameFinished:false,
@@ -237,9 +241,9 @@ usedAudience = () =>{
             player={this.state.playerName}/>
             <Score/>
         </div>
-        <div>
+        <Main/>
     </div>
-    </div>
+    
 
         };
     }
